@@ -1,0 +1,381 @@
+%%% PREAMBLE
+
+\documentclass[11pt]{report} % This is in order to have the chapter feature and page numbers in the same location on even and odd pages. 
+% Acceptable font sizes are 10 to 12 pts
+
+\usepackage[papersize={8.5 in, 11 in}, nohead, includeheadfoot, left=1.5 in, right = 1 in, vmargin= 1 in]{geometry}
+% The options above are to set the paper size (as per page 11 of the guidelines and the margins. Includefoot is to make sure that nothing
+% gets printed on the margins. The statutory margins are set on page 5. 
+
+\usepackage[doublespacing]{setspace} % Needed to set double-spacing for the main document, but needs more adhoc commands to
+								% use single spacing for tables, etc.
+\usepackage{calc}
+
+% For the signature boxes and much better looking tables
+\usepackage{array} % Also for better arrays (eg matrices) in maths
+\usepackage{tabularx}
+\usepackage{booktabs}
+
+% Commands to format the Table of Contents, List of Tables and List of Illustrations, as per the Wharton Template
+\usepackage{tocloft}
+\setcounter{tocdepth}{2} % Only show chapters and sections in ToC
+
+% Change names and format of tables
+\renewcommand{\contentsname}{TABLE OF CONTENTS}
+\renewcommand{\cfttoctitlefont}{\large\hfill}
+\renewcommand{\cftaftertoctitle}{\hfill}
+\renewcommand{\cftbeforetoctitleskip}{-21 pt} % The key value here is the -21 pts, I got to it by old fashioned measuring with a ruler....
+\renewcommand{\listtablename}{LIST OF TABLES}
+\renewcommand{\cftlottitlefont}{\large\hfill}
+\renewcommand{\cftafterlottitle}{\hfill}
+\renewcommand{\cftbeforelottitleskip}{-21 pt} % The key value here is the -21 pts, I got to it by old fashioned measuring with a ruler....
+\renewcommand{\listfigurename}{LIST OF ILLUSTRATIONS}
+\renewcommand{\cftloftitlefont}{\large\hfill}
+\renewcommand{\cftafterloftitle}{\hfill}
+\renewcommand{\cftbeforeloftitleskip}{-21 pt} % The key value here is the -21 pts, I got to it by old fashioned measuring with a ruler....
+
+% Format chapters (dots, including the word chapter, etc.)
+\renewcommand{\cftchapfont}{\upshape}
+\renewcommand{\cftchapleader}{\upshape\cftdotfill{\cftdotsep}}
+\renewcommand{\cftchappagefont}{\upshape}
+\renewcommand{\cftchappresnum}{CHAPTER }
+\renewcommand{\cftchapaftersnum}{ :}
+\newlength{\mylen}   % a "scratch" length
+\settowidth{\mylen}{\cftchappresnum \cftchapaftersnum} % extra space
+\addtolength{\cftchapnumwidth}{\mylen} % add the extra space
+
+% Format tables in LoT
+\renewcommand{\cfttableader}{\cftdotfill{\cftdotsep}}
+\renewcommand{\cfttabpresnum}{TABLE }
+\renewcommand{\cfttabaftersnum}{ :}
+\newlength{\mylent}   % a "scratch" length
+\settowidth{\mylent}{\cfttabpresnum} % extra space
+\addtolength{\cfttabnumwidth}{\mylent} % add the extra space
+\usepackage{remreset}
+
+% Format Illusstrations in LoF
+\renewcommand{\cftfigleader}{\cftdotfill{\cftdotsep}}
+\renewcommand{\cftfigpresnum}{FIGURE }
+\renewcommand{\cftfigaftersnum}{ :}
+\newlength{\mylenf}   % a "scratch" length
+\settowidth{\mylenf}{\cftfigpresnum} % extra space
+\addtolength{\cftfignumwidth}{\mylenf} % add the extra space
+
+% Commands (more further down, at preliminary, main and appendix) to change the formatting of chapter headings
+\usepackage[compact]{titlesec}
+\renewcommand{\beforetitleunit}{0 pt}
+\titleformat{\section}[hang]{\large}{\thesection.}{6 pt}{}
+\titleformat{\subsection}[hang]{\normalsize\itshape}{\thesubsection.}{6 pt}{}
+\titlespacing*{\section}{0pt}{0pt}{0pt}
+\titlespacing*{\subsection}{0pt}{0pt}{0pt}
+
+\usepackage{parskip} % To allow for better management of the Dutch paragraph style
+\usepackage{url} % To allow for better typing of the url in the Creative Commons part of the copyright
+\usepackage{natbib} % allows the author-date citation system
+\bibpunct{(}{)}{;}{a}{,}{,} % options for natbib to yield the citation style I like
+
+% Other packages that are not needed for the template, but I highly recommend (and all of your own packages go here to)
+% Add them one by one to make sure they do not interfere, for instance the package subfigure clashes with this template
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage{dcolumn}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{rotating}
+% \usepackage{xtab}               % collides on tablehead with glossaries
+\usepackage{paralist} % very flexible & customizable lists (eg. enumerate/itemize, etc.)
+\usepackage{verbatim}
+\usepackage{subfiles} % To be better able to manage large projects by compiling the separate files included in the final document
+
+% FOR ADDING LINE NO. I have checked, this does not mess with margins (i.e. the # appears outside the margins, so no new orphans/widows are introduced)
+\usepackage{lineno}
+\linenumbers
+
+%% TO TURN ON BIB FOR CHAPTER (when compiling chapters separately)
+% \def\biblio{\bibliographystyle{abbrvnat}\bibliography{thesis}}
+% %% TO TURN OFF BIB FOR EACH CHAPTER, (for compiling the whole thesis)
+\def\biblio{}
+
+%% BEGIN MY PREAMBLE
+%%% Add packages for your project here.
+%% END MY PREAMBLE
+
+%%% BEGIN DOCUMENT
+
+\begin{document}
+% Making tables and figures numbered continuously
+\makeatletter
+\@removefromreset{table}{chapter}
+\makeatother
+\renewcommand{\thetable}{\arabic{table}}
+\makeatletter
+\@removefromreset{figure}{chapter}
+\makeatother
+\renewcommand{\thefigure}{\arabic{figure}}
+
+\def\sym#1{\ifmmode^{#1}\else\(^{#1}\)\fi} % Defining stars for significance tables
+
+% Defining variables to be used throughout the document for personalization
+\def\mytitle{THESIS TITLE} % Make sure this is in all caps
+\def\myauthor{My Name}
+\def\myauthorfull{My Full Name}
+\def\mysupervisorname{Advisor Name}
+\def\mysupervisortitle{Professor of Computer and Information Science}
+\newlength{\superlen}   % a "scratch" length
+\settowidth{\superlen}{\mysupervisorname, \mysupervisortitle} % Width of signature line for supervisor
+\def\gradchairname{Grad Chair Name}
+\def\gradchairtitle{Professor of Computer and Information Science}
+\newlength{\chairlen}   % a "scratch" length
+\settowidth{\chairlen}{\gradchairname, \gradchairtitle} % Width of signature line for supervisor
+\newlength{\maxlen}
+\setlength{\maxlen}{\maxof{\superlen}{\chairlen}}
+\def\mydepartment{Computer and Information Science}
+\def\myyear{20XX}
+\def\signatures{46 pt} % Space to accommodate the signatures, you can fiddle with this as you like
+
+%% PRELIMINARY PAGES
+
+\pagenumbering{roman}
+\pagestyle{plain}
+
+% TITLE PAGE
+
+\begin{titlepage}
+\thispagestyle{empty} % No page numbers on title page, as per Manual page 8
+\begin{center}
+
+\onehalfspacing
+
+\mytitle
+
+\myauthor
+
+A DISSERTATION
+
+in 
+
+\mydepartment 
+
+% For the Graduate Group in Managerial Science and Applied Economics 
+
+Presented to the Faculties of the University of Pennsylvania
+
+in 
+
+Partial Fulfillment of the Requirements for the
+
+Degree of Doctor of Philosophy
+
+\myyear
+
+\end{center}
+
+\vfill % Here to make sure the page is filled
+
+\begin{flushleft}
+
+Supervisor of Dissertation\\[\signatures] % Space for signature, you can fiddle with this as you like
+
+\renewcommand{\tabcolsep}{0 pt}
+\begin{table}[h]
+\begin{tabularx}{\maxlen}{l}
+\toprule
+\mysupervisorname, \mysupervisortitle\\ %Space between advisor and graduate chair, you can fiddle with this as you like
+\end{tabularx}
+\end{table}
+
+Graduate Group Chairperson\\[\signatures] % Space for signature, you can fiddle with this as you likee
+
+\begin{table}[h]
+\begin{tabularx}{\maxlen}{l}
+\toprule
+\gradchairname, \gradchairtitle\\ %Space between advisor and graduate chair, you can fiddle with this as you like
+\end{tabularx}
+\end{table}
+\singlespacing
+
+Dissertation Committee % No signature necessary
+
+Person Name1, Title
+
+Person Name2, Title
+
+Person Name3, Title
+
+Person Name4, Title
+
+Person Name5, Title
+
+\end{flushleft}
+
+\end{titlepage}
+
+% COPYRIGHT NOTICE (optional)
+
+\doublespacing
+
+\thispagestyle{empty} % No page number as per Manual, p. 11
+
+\vspace*{\fill}
+
+\begin{flushleft}
+\mytitle
+
+ \copyright \space COPYRIGHT
+ 
+\myyear
+
+\myauthorfull\\[24 pt] % If traditional copyright then delete everything below here, but keep \end{flushleft}
+
+This work is licensed under the \\
+Creative Commons Attribution \\
+NonCommercial-ShareAlike 3.0 \\
+License
+
+To view a copy of this license, visit
+
+\url{http://creativecommons.org/licenses/by-nc-sa/3.0/}
+
+\end{flushleft}
+\pagebreak 
+
+% Changing formatting for preliminary pages (NOT OPTIONAL)
+\newenvironment{preliminary}{}{}
+\titleformat{\chapter}[hang]{\large\center}{\thechapter}{0 pt}{}
+\titlespacing*{\chapter}{0pt}{-33 pt}{6 pt} % The key value here is the -33 pts, I got to it by old fashioned measuring with a ruler....
+\begin{preliminary}
+
+% DEDICATION (OPTIONAL)
+\setcounter{page}{3}  %Makes this page Roman numeral 3. Thanks to Albert Zevelev.
+\begin{center}
+\textit{Dedicated to (optional)}
+\end{center}
+
+% ACKNOWLEDGEMENT (OPTIONAL)
+
+\clearpage
+\chapter*{ACKNOWLEDGEMENT}
+\addcontentsline{toc}{chapter}{ACKNOWLEDGEMENT} % This is to include this section in the Table of Contents
+\input{acknowledgement}
+
+% ABSTRACT
+
+\clearpage
+\chapter*{ABSTRACT}
+\addcontentsline{toc}{chapter}{ABSTRACT} % This is to include this section in the Table of Contents
+\begin{center}
+\mytitle
+
+\myauthor
+
+\mysupervisorname
+
+\end{center}
+
+\input{abstract}
+% TABLE OF CONTENTS
+
+\clearpage
+\tableofcontents
+
+% LIST OF TABLES
+
+\clearpage
+\listoftables
+\addcontentsline{toc}{chapter}{LIST OF TABLES}
+
+% LIST OF ILUSTRATIONS
+
+\clearpage
+\listoffigures
+\addcontentsline{toc}{chapter}{LIST OF ILLUSTRATIONS}
+
+% PREFACE (OPTIONAL)
+
+% \clearpage
+% \chapter*{PREFACE (optional)}
+% \addcontentsline{toc}{chapter}{PREFACE} % This is to include this section in the Table of Contents
+
+\end{preliminary}
+
+%% MAIN TEXT
+\newenvironment{mainf}{}{}
+\titleformat{\chapter}[hang]{\large\center}{CHAPTER \thechapter}{0 pt}{ : }
+\titlespacing*{\chapter}{0pt}{-29 pt}{6 pt} % The key value here is the -29 pts, I got to it by old fashioned measuring with a ruler....
+\begin{mainf}
+
+\newpage
+\pagenumbering{arabic}
+\pagestyle{plain} % This has to be repeated here because the lists change the style
+
+% Dutch style of paragraph formatting, i.e. no indents. 
+\setlength{\parskip}{10 pt} % Same as Word file
+\setlength{\parindent}{0pt}
+
+% This is where I would call the different chapters
+
+\subfile{introduction.tex}  
+
+\subfile{chapter1/chapter1.tex}
+
+\subfile{chapter2/chapter2.tex}
+
+\subfile{conclusion.tex}
+
+\end{mainf}
+
+%% APPENDICES (OPTIONAL)
+\appendix
+
+% APPENDIX START
+\newenvironment{appendixf}{}{}
+\titleformat{\chapter}[hang]{\large\center}{APPENDIX}{0 pt}{} % Old {APPENDIX \thechapter}{0 pt}{ : }
+\titlespacing*{\chapter}{0pt}{-33 pt}{6 pt} % The key value here is the -33 pts, I got to it by old fashioned measuring with a ruler....
+
+\begin{appendixf}
+\addtocontents{toc}{\protect\setcounter{tocdepth}{-1}} % This is to fix how appendices are shown in ToC
+\clearpage
+\chapter{}
+\addtocontents{toc}{\protect\setcounter{tocdepth}{1}} % This is to bring things back to normal
+\addcontentsline{toc}{chapter}{APPENDIX} % You have to write here everything you want the ToC to show including \thechapter if you want numbering
+% \addtocontents{toc}{\protect\setcounter{tocdepth}{-1}} % This is so sections in the appendix are not shown in the ToC
+\subfile{appendix}
+% \addtocontents{toc}{\protect\setcounter{tocdepth}{1}} % This is to bring things back to normal
+\end{appendixf}
+
+% GLOSSARY START
+\newenvironment{glossaryf}{}{}
+\titleformat{\chapter}[hang]{\large\center}{GLOSSARY}{0 pt}{} % Old {APPENDIX \thechapter}{0 pt}{ : }
+\titlespacing*{\chapter}{0pt}{-33 pt}{6 pt} % The key value here is the -33 pts, I got to it by old fashioned measuring with a ruler....
+
+\begin{glossaryf}
+\addtocontents{toc}{\protect\setcounter{tocdepth}{-1}} % This is to fix how appendices are shown in ToC
+\clearpage
+\chapter{}
+\addtocontents{toc}{\protect\setcounter{tocdepth}{1}} % This is to bring things back to normal
+\addcontentsline{toc}{chapter}{GLOSSARY} % You have to write here everything you want the ToC to show including \thechapter if you want numbering
+\subfile{glossary}
+\end{glossaryf}
+
+
+%% BIBLIOGRAPHY
+
+\singlespacing
+\newenvironment{bibliof}{}{}
+\titleformat{\chapter}[hang]{\large\center}{\thechapter}{0 pt}{}
+\titlespacing*{\chapter}{0pt}{-25 pt}{6 pt} % The key value here is the -25 pts, I got to it by old fashioned measuring with a ruler....
+\begin{bibliof}
+
+\renewcommand\bibname{BIBLIOGRAPHY}
+\addcontentsline{toc}{chapter}{BIBLIOGRAPHY}
+\bibliographystyle{abbrvnat}
+\bibliography{thesis}
+% This is the filename of the bibtex bibliography file (it has to be in the same directory as the main LaTeX file)
+
+\end{bibliof}
+%% INDEX (OPTIONAL) - I do not really know how to code this, sorry
+
+\end{document}

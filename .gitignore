@@ -1,0 +1,18 @@
+*.bak
+*.lot
+*.lof
+*.out
+*.aux
+*.bbl
+*.blg
+*.log
+*.pdf
+*.toc
+main.pdf
+acl2017.pdf
+makefile
+auto/
+Prelim Others
+*.acn
+*.ist
+*.syg
