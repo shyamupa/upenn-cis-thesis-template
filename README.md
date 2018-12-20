@@ -1,6 +1,9 @@
-Thesis template for organizing chapters and
+This project has the Thesis template for UPenn CIS students, that I got by modifying the template [here](https://guides.library.upenn.edu/dissertation_manual/formatting).
+As far as I can tell by inspecting earlier theses before me, this template is correct. 
 
-I also have a makefile that compiles chapters separately (with bibliography)
+I have organized chapters into folders so that all `.tex` files relevant to a certain chapter remain in one place. 
+
+I also have a makefile that compiles chapters separately (with bibliography), so that you can quickly compile the chapter you are working on, without compiling the entire thesis. 
 
 
 ### Compile Entire Thesis
@@ -20,8 +23,8 @@ And then run
 make clean; make
 ```
 
-### Compile Chapter
-To compiling a single chapter for proofreading. 
+### Compile Chapter Separately
+To compile a single chapter for proofreading. 
 
 Ensure that the correct biblio setting is active, 
 
