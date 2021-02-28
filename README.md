@@ -11,7 +11,7 @@ I also have a makefile that compiles chapters separately (with bibliography), so
 
 Use Tex Live 2017 for correct spacing.  
 On Mac,
-* Download MacTex 2017 (`mactex-date.pkg` and `mactex-ghostscript-version/date.pkg`) from [here](http://ftp.math.utah.edu/pub/tex/historic/systems/mactex/)
+* Download [MacTex](http://www.tug.org/mactex/index.html) 2017 (`mactex-date.pkg` and `mactex-ghostscript-version/date.pkg`) from [here](http://ftp.math.utah.edu/pub/tex/historic/systems/mactex/)
 * Install `mactex.pkg` and then `ghostscript.pkg`
 * Open the GUI software, TeX Live Utility, and change the version to be used to 2017. Goto `Configure` --> `Change Default Tex Live Version ...`
 
